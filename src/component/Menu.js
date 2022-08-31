@@ -1,34 +1,34 @@
-import Button from "./Button";
+import { useState } from "react";
+import Cooking from "./Cooking";
 
 export default function Menu() {
-  return (
-    <div className="bg-gray-500">
-      <h2>메뉴</h2>
-      <div>
-        <div>김치찌개</div>
-        <div>조리시간:3초</div>
-        <div>가격:7000원</div>
-        <div className="flex">
-          <Button>조리 시작</Button>
-          <Button>메뉴 삭제</Button>
-        </div>
-      </div>
+  const [koreaFood, setKoreaFood] = useState([
+    {
+      foodName: "김치찌개",
+      cookingTime: "3초",
+      price: "7000원",
+    },
+    {
+      foodName: "된장찌개",
+      cookingTime: "10초",
+      price: "8000원",
+    },
+  ]);
+  const [japanFood, setJapanFood] = useState([
+    {
+      foodName: "초밥",
+      cookingTime: "5초",
+      price: "7000원",
+    },
+  ]);
+  const [chineseFood, setChineseFood] = useState([]);
 
-      <div>
-        <div>된장찌개</div>
-        <div>조리시간:10초</div>
-        <div>가격:8000원</div>
-        <div className="flex">
-          <Button>조리 시작</Button>
-          <Button>메뉴 삭제</Button>
-        </div>
-      </div>
-      <div className="flex">
-        <input placeholder="요리이름" className="bg-white" />
-        <input placeholder="요리이름" className="bg-white" />
-        <input placeholder="요리이름" className="bg-white" />
-        <Button>메뉴 추가</Button>
-      </div>
+  return (
+    <div className="bg-gray-200">
+      <h2>메뉴</h2>
+      <Cooking foods={koreaFood} />
+      <Cooking foods={japanFood} />
+      <Cooking foods={chineseFood} />
     </div>
   );
 }
