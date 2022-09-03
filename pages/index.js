@@ -12,34 +12,39 @@ export default function Home() {
 
   const [foodMenu, setFoodMenu] = useState([
     {
+      id: 1,
       foodName: "김치찌개",
       foodType: "koreaFood",
-      cookingTime: "3초",
-      price: "7000원",
+      category: "한식",
+      cookingTime: 8,
+      price: 7000,
     },
     {
+      id: 2,
       foodName: "된장찌개",
       foodType: "koreaFood",
-      cookingTime: "10초",
-      price: "8000원",
+      category: "한식",
+      cookingTime: 10,
+      price: 8500,
     },
     {
+      id: 3,
       foodName: "초밥",
       foodType: "japanFood",
-      cookingTime: "5초",
-      price: "7000원",
+      category: "일식",
+      cookingTime: 5,
+      price: 9000,
     },
   ]);
 
   return (
     <div>
       <Header />
-      <div className="flex">
+      <div className='flex'>
         <Category
           foodMenu={foodMenu}
           foodType={foodType}
           setFoodType={setFoodType}
-          set
         />
         <Menu
           setFoodMenu={setFoodMenu}
