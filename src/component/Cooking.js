@@ -2,13 +2,18 @@ import React from "react";
 import { useState } from "react";
 import Button from "./Button";
 
-export default function Cooking({ foodType, foodMenu, setFoodMenu }) {
+export default function Cooking({
+  foodType,
+  foodMenu,
+  setFoodMenu,
+  cookingHandler,
+}) {
   const [foodName, setFoodName] = useState("");
-  const [cookingTime, setCookingTime] = useState();
-  const [price, setPrice] = useState();
+  const [cookingTime, setCookingTime] = useState("");
+  const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
 
-  const foodFilter = foodMenu.filter((item) => item.foodType === foodType);
+  const foodFilter = foodMenu.filter((item) => item.category === foodType);
 
   const menuCreateHanlder = () => {
     if (!foodName || !cookingTime || !price || !category) {
@@ -19,9 +24,8 @@ export default function Cooking({ foodType, foodMenu, setFoodMenu }) {
     const menuData = {
       id: Date.now(),
       foodName,
-      cookingTime,
-      price,
-      foodType,
+      cookingTime: Number(cookingTime),
+      price: Number(price),
       category,
     };
     // 왜 push를 쓰면 안되는가?
@@ -41,46 +45,48 @@ export default function Cooking({ foodType, foodMenu, setFoodMenu }) {
     setFoodMenu(filteredData);
   };
 
-  const cookingList = foodFilter.map((item) => {
-    return (
-      <div key={item.id}>
-        <div>{item.foodName}</div>
-        <div>조리시간 : {item.cookingTime}</div>
-        <div>가격 : {item.price}</div>
-        <div>
-          <Button>조리 시작</Button>
-          <Button onClick={() => deleteMenuHandler(item.id)}>메뉴 삭제</Button>
-        </div>
+  const cookingList = foodFilter.map((item) => (
+    <div key={item.id}>
+      <div>{item.foodName}</div>
+      <div>조리시간 : {item.cookingTime}초</div>
+      <div>가격 : {item.price}원</div>
+      <div>
+        <Button onClick={() => cookingHandler(item)}>조리 시작</Button>
+        <Button onClick={() => deleteMenuHandler(item.id)}>메뉴 삭제</Button>
       </div>
-    );
-  });
+    </div>
+  ));
 
   return (
     <div>
       {cookingList}
 
-      <div className='flex'>
+      <div className="flex">
         <input
-          placeholder='요리이름'
-          className='bg-white'
+          type="text"
+          placeholder="요리이름"
+          className="bg-white"
           value={foodName}
           onChange={(e) => setFoodName(e.target.value)}
         />
         <input
-          placeholder='조리시간'
-          className='bg-white'
+          type="number"
+          placeholder="조리시간"
+          className="bg-white"
           value={cookingTime}
           onChange={(e) => setCookingTime(e.target.value)}
         />
         <input
-          placeholder='가격'
-          className='bg-white'
+          type="number"
+          placeholder="가격"
+          className="bg-white"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
         <input
-          placeholder='카테고리'
-          className='bg-white'
+          type="text"
+          placeholder="카테고리"
+          className="bg-white"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         />
