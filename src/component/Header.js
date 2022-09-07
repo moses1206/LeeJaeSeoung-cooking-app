@@ -16,7 +16,7 @@ export default function Header({ cookingMenu }) {
         {cookingMenu.map((item) => {
           return (
             <div key={item.id}>
-              <div>{item.menuId}</div>
+              <div>😊😂🤣li{item.menuId}</div>
               <div>남은시간: {item.remainingTime}초</div>
               <div className="flex">
                 <Button>pause</Button>

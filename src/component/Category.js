@@ -2,8 +2,6 @@ import Button from "./Button";
 import Cooking from "./Cooking";
 
 export default function Category({ foodType, setFoodType, foodMenu }) {
-  // 과제 : 3개의 버튼의 코드 중복 없애기
-
   console.log("푸드메뉴", foodMenu);
   let filteredCategory = foodMenu.map((item) => item.category);
 

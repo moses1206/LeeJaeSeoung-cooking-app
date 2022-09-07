@@ -6,9 +6,10 @@ import { useState, useEffect } from "react";
 export default function Home() {
   /**
    * * 함수 이름은 동사로 시작
-   *   이름만으로 행위를 인식하도록
+   *   이름만으로 기능을 확인하기 쉽도록
    * context 문서 읽어보기: https://reactjs.org/docs/context.html
    * 시간 0 됐을 때 계산하기 버튼 보여주기
+   * id로 foodMenu 이름 불러오기
    */
   const [foodType, setFoodType] = useState("한식");
   const [cookingMenu, setCookingMenu] = useState([]);
