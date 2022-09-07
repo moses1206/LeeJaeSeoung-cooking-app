@@ -38,7 +38,7 @@ export default function Home() {
     },
   ]);
 
-  const cookingHandler = (item) => {
+  const handleCooking = (item) => {
     const cooking = {
       id: Date.now(),
       menuId: item.id,
@@ -72,7 +72,7 @@ export default function Home() {
 
   return (
     <div>
-      <Header cookingMenu={cookingMenu} />
+      <Header foodMenu={foodMenu} cookingMenu={cookingMenu} />
       <div className="flex">
         <Category
           foodMenu={foodMenu}
@@ -83,7 +83,7 @@ export default function Home() {
           setFoodMenu={setFoodMenu}
           foodMenu={foodMenu}
           foodType={foodType}
-          cookingHandler={cookingHandler}
+          handleCooking={handleCooking}
         />
       </div>
     </div>

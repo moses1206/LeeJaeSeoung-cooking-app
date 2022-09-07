@@ -1,11 +1,9 @@
 import Button from "./Button";
 
-export default function Header({ cookingMenu }) {
-  console.log("쿠킹메뉴", typeof cookingMenu);
-
+export default function Header({ cookingMenu, foodMenu }) {
   const countHanler = (time) => {};
-
   // TODO: item.menuId 를 메뉴 이름으로 변경하기
+
   return (
     <div className="bg-yellow-300 flex min-h-[110px] p-5">
       <div className="">
@@ -14,9 +12,21 @@ export default function Header({ cookingMenu }) {
           <h2>조리현황</h2>
         </div>
         {cookingMenu.map((item) => {
+          // Q 필터와 find의 차이는 무엇인가???
+          // const findMenu = foodMenu.filter((menu) => menu.id === item.menuId);
+
+          const findMenu = foodMenu.find((menu) => menu.id === item.menuId);
+
+          console.log("FindMenu", findMenu);
+          // const nm = foodMenu.forEach((element) => {
+          //   if (element.id === cookingMenu.id) {
+          //     return element.foodName;
+          //   }
+          // });
+
           return (
             <div key={item.id}>
-              <div>😊😂🤣li{item.menuId}</div>
+              <div>😊😂🤣{findMenu.foodName}</div>
               <div>남은시간: {item.remainingTime}초</div>
               <div className="flex">
                 <Button>pause</Button>

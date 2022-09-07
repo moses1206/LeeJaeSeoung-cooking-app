@@ -2,13 +2,10 @@ import Button from "./Button";
 import Cooking from "./Cooking";
 
 export default function Category({ foodType, setFoodType, foodMenu }) {
-  console.log("푸드메뉴", foodMenu);
   let filteredCategory = foodMenu.map((item) => item.category);
 
-  console.log("FilteredCategory", filteredCategory);
   const set = new Set(filteredCategory);
   const uniqueCategory = [...set];
-  console.log("UniqueCategory", uniqueCategory); // 한식,중식
 
   return (
     <div className="w-52 bg-black">
