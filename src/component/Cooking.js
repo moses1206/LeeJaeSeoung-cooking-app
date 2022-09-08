@@ -6,7 +6,7 @@ export default function Cooking({
   foodType,
   foodMenu,
   setFoodMenu,
-  handleCooking,
+  handleAddCooking,
 }) {
   const [foodName, setFoodName] = useState("");
   const [cookingTime, setCookingTime] = useState("");
@@ -51,7 +51,7 @@ export default function Cooking({
       <div>조리시간 : {item.cookingTime}초</div>
       <div>가격 : {item.price}원</div>
       <div>
-        <Button onClick={() => handleCooking(item)}>조리 시작</Button>
+        <Button onClick={() => handleAddCooking(item)}>조리 시작</Button>
         <Button onClick={() => deleteMenuHandler(item.id)}>메뉴 삭제</Button>
       </div>
     </div>

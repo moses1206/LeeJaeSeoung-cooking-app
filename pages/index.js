@@ -13,7 +13,7 @@ export default function Home() {
    */
   const [foodType, setFoodType] = useState("한식");
   const [cookingMenu, setCookingMenu] = useState([]);
-
+  const [maxCookingCount, setMaxCookingCount] = useState(1);
   const [foodMenu, setFoodMenu] = useState([
     {
       id: 1,
@@ -38,21 +38,29 @@ export default function Home() {
     },
   ]);
 
-  const handleCooking = (item) => {
+  const handleAddCooking = (item) => {
     const cooking = {
       id: Date.now(),
       menuId: item.id,
       remainingTime: item.cookingTime,
     };
-    setCookingMenu([...cookingMenu, cooking]);
+    if (cookingMenu.length < maxCookingCount) {
+      setCookingMenu([...cookingMenu, cooking]);
+    }
   };
 
   useEffect(() => {
     // TODO: 불변으로 관리하기
+    // 💥💥 return()=> clearInterval , clearInterval 차이는?? 💥💥
     const id = setInterval(() => {
       for (const item of cookingMenu) {
         // 직접적으로 값을 바꾸면 안된다. 레퍼런스로 바꾸어야 한다.
-        item.remainingTime -= 1;
+        if (item.remainingTime > 0) {
+          item.remainingTime -= 1;
+        }
+        if (item.remainingTime === 0) {
+          clearInterval(id);
+        }
       }
       // 리액트에서 변경감지는 레퍼런스의 변경유무로 판단
       setCookingMenu([...cookingMenu]);
@@ -72,7 +80,12 @@ export default function Home() {
 
   return (
     <div>
-      <Header foodMenu={foodMenu} cookingMenu={cookingMenu} />
+      <Header
+        foodMenu={foodMenu}
+        cookingMenu={cookingMenu}
+        maxCookingCount={maxCookingCount}
+        setMaxCookingCount={setMaxCookingCount}
+      />
       <div className="flex">
         <Category
           foodMenu={foodMenu}
@@ -83,7 +96,7 @@ export default function Home() {
           setFoodMenu={setFoodMenu}
           foodMenu={foodMenu}
           foodType={foodType}
-          handleCooking={handleCooking}
+          handleAddCooking={handleAddCooking}
         />
       </div>
     </div>

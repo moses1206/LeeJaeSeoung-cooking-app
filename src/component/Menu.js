@@ -5,7 +5,7 @@ export default function Menu({
   foodType,
   foodMenu,
   setFoodMenu,
-  handleCooking,
+  handleAddCooking,
 }) {
   return (
     <div className="bg-gray-200">
@@ -14,7 +14,7 @@ export default function Menu({
         foodType={foodType}
         setFoodMenu={setFoodMenu}
         foodMenu={foodMenu}
-        handleCooking={handleCooking}
+        handleAddCooking={handleAddCooking}
       />
     </div>
   );
