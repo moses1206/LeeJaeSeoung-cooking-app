@@ -2,10 +2,11 @@ import Button from "./Button";
 import { useState } from "react";
 
 export default function Header({
-  cookingMenu,
-  foodMenu,
+  cookingList,
+  menuList,
   maxCookingCount,
   setMaxCookingCount,
+  setCookingList,
 }) {
   const handlePlusCount = () => {
     maxCookingCount += 1;
@@ -18,16 +19,20 @@ export default function Header({
     setMaxCookingCount(maxCookingCount);
   };
 
-  const [foodPrice, setFoodPrice] = useState("");
+  const [totalSales, setTotalSales] = useState(0);
 
-  const handleCalculatePrice = (price) => {
-    // const calculatePrice = cookingMenu.reduce((accumulator, currentObj) => {
+  const handleCalculatePrice = (cooking) => {
+    // const calculatePrice = cookingList.reduce((accumulator, currentObj) => {
     //   return accumulator + currentObj.price;
     // }, 0);
     // setFoodPrice(calculatePrice);
-    console.log("Price", price);
+    totalSales += cooking.price;
 
-    setFoodPrice(price);
+    setTotalSales(totalSales);
+
+    // 이름만으로 배열임을 표현해야한다. cookingList의 아이템 이름 List , s
+    const newCookingList = cookingList.filter((item) => item.id !== cooking.id);
+    setCookingList(newCookingList);
   };
 
   return (
@@ -37,15 +42,15 @@ export default function Header({
           <div>이미지</div>
           <h2>조리현황</h2>
         </div>
-        {cookingMenu.map((item) => {
+        {cookingList.map((item) => {
           // Q 필터와 find의 차이는 무엇인가???
-          // const findMenu = foodMenu.filter((menu) => menu.id === item.menuId);
+          // const findMenu = menuList.filter((menu) => menu.id === item.menuId);
 
-          const findMenu = foodMenu.find((menu) => menu.id === item.menuId);
+          const findMenu = menuList.find((menu) => menu.id === item.menuId);
 
           console.log("FindMenu", findMenu);
-          // const nm = foodMenu.forEach((element) => {
-          //   if (element.id === cookingMenu.id) {
+          // const nm = menuList.forEach((element) => {
+          //   if (element.id === cookingList.id) {
           //     return element.foodName;
           //   }
           // });
@@ -56,7 +61,7 @@ export default function Header({
               <div className="flex">
                 {item.remainingTime === 0 ? (
                   <div>
-                    <Button onClick={() => handleCalculatePrice(item.price)}>
+                    <Button onClick={() => handleCalculatePrice(item)}>
                       계산하기
                     </Button>
                   </div>
@@ -73,7 +78,7 @@ export default function Header({
             </div>
           );
         })}
-        {cookingMenu.length === 0 && <h4>조리 중인 요리가 업습니다.</h4>}
+        {cookingList.length === 0 && <h4>조리 중인 요리가 업습니다.</h4>}
       </div>
 
       <div className="flex w-full items-end flex-col ">
@@ -84,7 +89,7 @@ export default function Header({
         </div>
         <div className="flex mr-36 ">
           <div>이미지</div>
-          <div>매출:{foodPrice}원</div>
+          <div>매출:{totalSales}원</div>
         </div>
       </div>
     </div>

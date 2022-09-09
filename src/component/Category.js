@@ -1,8 +1,8 @@
 import Button from "./Button";
 import Cooking from "./Cooking";
 
-export default function Category({ foodType, setFoodType, foodMenu }) {
-  let filteredCategory = foodMenu.map((item) => item.category);
+export default function Category({ foodType, setFoodType, menuList }) {
+  let filteredCategory = menuList.map((item) => item.category);
 
   const set = new Set(filteredCategory);
   const uniqueCategory = [...set];
@@ -19,7 +19,7 @@ export default function Category({ foodType, setFoodType, foodMenu }) {
               disabled={foodType === item}
               onClick={() => setFoodType(item)}
             >
-              {item} ({foodMenu.filter((menu) => menu.category === item).length}
+              {item} ({menuList.filter((menu) => menu.category === item).length}
               )
             </Button>
           );

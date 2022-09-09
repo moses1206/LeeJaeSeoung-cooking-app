@@ -4,8 +4,8 @@ import Button from "./Button";
 
 export default function Cooking({
   foodType,
-  foodMenu,
-  setFoodMenu,
+  menuList,
+  setMenuList,
   handleAddCooking,
 }) {
   const [foodName, setFoodName] = useState("");
@@ -13,7 +13,7 @@ export default function Cooking({
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
 
-  const foodFilter = foodMenu.filter((item) => item.category === foodType);
+  const foodFilter = menuList.filter((item) => item.category === foodType);
 
   const menuCreateHanlder = () => {
     if (!foodName || !cookingTime || !price || !category) {
@@ -30,9 +30,9 @@ export default function Cooking({
     };
     // 왜 push를 쓰면 안되는가?
     // 상태값이 변했을때 자동 렌더링이 된다. 왜 안되는가?
-    // foodMenu 의 배열 레퍼런스가 바뀌지 않았다.
+    // menuList 의 배열 레퍼런스가 바뀌지 않았다.
 
-    setFoodMenu([...foodMenu, menuData]);
+    setMenuList([...menuList, menuData]);
     setFoodName("");
     setCookingTime("");
     setPrice("");
@@ -40,9 +40,9 @@ export default function Cooking({
   };
 
   const deleteMenuHandler = (id) => {
-    const filteredData = foodMenu.filter((item) => item.id !== id);
+    const filteredData = menuList.filter((item) => item.id !== id);
     console.log("삭제된후 데이터  ", filteredData);
-    setFoodMenu(filteredData);
+    setMenuList(filteredData);
   };
 
   const cookingList = foodFilter.map((item) => (

@@ -3,8 +3,8 @@ import Cooking from "./Cooking";
 
 export default function Menu({
   foodType,
-  foodMenu,
-  setFoodMenu,
+  menuList,
+  setMenuList,
   handleAddCooking,
 }) {
   return (
@@ -12,8 +12,8 @@ export default function Menu({
       <h2>메뉴</h2>
       <Cooking
         foodType={foodType}
-        setFoodMenu={setFoodMenu}
-        foodMenu={foodMenu}
+        setMenuList={setMenuList}
+        menuList={menuList}
         handleAddCooking={handleAddCooking}
       />
     </div>

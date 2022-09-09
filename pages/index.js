@@ -2,6 +2,7 @@ import Category from "../src/component/Category";
 import Header from "../src/component/Header";
 import Menu from "../src/component/Menu";
 import { useState, useEffect } from "react";
+import produce from "immer";
 
 export default function Home() {
   /**
@@ -11,10 +12,12 @@ export default function Home() {
    * 시간 0 됐을 때 계산하기 버튼 보여주기
    * id로 foodMenu 이름 불러오기
    */
+
+  // F2 Rename 기능
   const [foodType, setFoodType] = useState("한식");
-  const [cookingMenu, setCookingMenu] = useState([]);
+  const [cookingList, setCookingList] = useState([]);
   const [maxCookingCount, setMaxCookingCount] = useState(2);
-  const [foodMenu, setFoodMenu] = useState([
+  const [menuList, setMenuList] = useState([
     {
       id: 1,
       foodName: "김치찌개",
@@ -45,8 +48,8 @@ export default function Home() {
       remainingTime: item.cookingTime,
       price: item.price,
     };
-    if (cookingMenu.length < maxCookingCount) {
-      setCookingMenu([...cookingMenu, cooking]);
+    if (cookingList.length < maxCookingCount) {
+      setCookingList([...cookingList, cooking]);
     }
   };
 
@@ -54,24 +57,20 @@ export default function Home() {
     // TODO: 불변으로 관리하기
     // 💥💥 return()=> clearInterval , clearInterval 차이는?? 💥💥
     const id = setInterval(() => {
-      for (const item of cookingMenu) {
-        // 직접적으로 값을 바꾸면 안된다. 레퍼런스로 바꾸어야 한다.
-        if (item.remainingTime > 0) {
-          item.remainingTime -= 1;
+      const newCookingList = produce(cookingList, (draft) => {
+        for (const item of draft) {
+          // 직접적으로 값을 바꾸면 안된다. 레퍼런스로 바꾸어야 한다.
+          if (item.remainingTime > 0) {
+            item.remainingTime -= 1;
+          }
         }
-        if (item.remainingTime < 0) {
-          return () => clearInterval(id);
-        }
-      }
-      // 리액트에서 변경감지는 레퍼런스의 변경유무로 판단
-      setCookingMenu([...cookingMenu]);
-      // setCookingMenu([cookingMenu[0],cookingMenu[1],cookingMenu[2],]);
-      // setCookingMenu([cookingMenu]);
+      });
+      setCookingList(newCookingList);
     }, 1000);
     return () => clearInterval(id);
-  }, [cookingMenu]);
+  }, [cookingList]);
 
-  console.log("쿠킹메뉴", cookingMenu);
+  console.log("쿠킹메뉴", cookingList);
 
   // 등록과 해제의 페어가 있다. setInterval setTimeout addEventListener
 
@@ -84,20 +83,21 @@ export default function Home() {
   return (
     <div>
       <Header
-        foodMenu={foodMenu}
-        cookingMenu={cookingMenu}
+        menuList={menuList}
+        cookingList={cookingList}
         maxCookingCount={maxCookingCount}
         setMaxCookingCount={setMaxCookingCount}
+        setCookingList={setCookingList}
       />
       <div className="flex">
         <Category
-          foodMenu={foodMenu}
+          menuList={menuList}
           foodType={foodType}
           setFoodType={setFoodType}
         />
         <Menu
-          setFoodMenu={setFoodMenu}
-          foodMenu={foodMenu}
+          setMenuList={setMenuList}
+          menuList={menuList}
           foodType={foodType}
           handleAddCooking={handleAddCooking}
         />
@@ -105,3 +105,30 @@ export default function Home() {
     </div>
   );
 }
+
+const person = {
+  name: "abc",
+  hobby: {
+    name: "soccer",
+    prop2: 12,
+  },
+  hobby2: {
+    name: "soccer2",
+    prop2: 12,
+  },
+};
+
+// person.hobby.name = "aaa";
+// const newPerson1 = produce(person, (draft) => {
+//   draft.hobby.name = "aaa";
+// });
+// newPerson1 !== person
+// newPerson1.hobby !== person.hobby
+// newPerson1.hobby2 === person.hobby2
+// const newPerson2 = {
+//   ...person,
+//   hobby: {
+//     ...person.hobby,
+//     name: "aaa",
+//   },
+// };
