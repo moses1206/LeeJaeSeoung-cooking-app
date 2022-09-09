@@ -13,7 +13,7 @@ export default function Home() {
    */
   const [foodType, setFoodType] = useState("한식");
   const [cookingMenu, setCookingMenu] = useState([]);
-  const [maxCookingCount, setMaxCookingCount] = useState(1);
+  const [maxCookingCount, setMaxCookingCount] = useState(2);
   const [foodMenu, setFoodMenu] = useState([
     {
       id: 1,
@@ -43,6 +43,7 @@ export default function Home() {
       id: Date.now(),
       menuId: item.id,
       remainingTime: item.cookingTime,
+      price: item.price,
     };
     if (cookingMenu.length < maxCookingCount) {
       setCookingMenu([...cookingMenu, cooking]);
@@ -58,8 +59,8 @@ export default function Home() {
         if (item.remainingTime > 0) {
           item.remainingTime -= 1;
         }
-        if (item.remainingTime === 0) {
-          clearInterval(id);
+        if (item.remainingTime < 0) {
+          return () => clearInterval(id);
         }
       }
       // 리액트에서 변경감지는 레퍼런스의 변경유무로 판단
@@ -69,6 +70,8 @@ export default function Home() {
     }, 1000);
     return () => clearInterval(id);
   }, [cookingMenu]);
+
+  console.log("쿠킹메뉴", cookingMenu);
 
   // 등록과 해제의 페어가 있다. setInterval setTimeout addEventListener
 

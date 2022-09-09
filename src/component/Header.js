@@ -1,4 +1,5 @@
 import Button from "./Button";
+import { useState } from "react";
 
 export default function Header({
   cookingMenu,
@@ -6,9 +7,6 @@ export default function Header({
   maxCookingCount,
   setMaxCookingCount,
 }) {
-  const countHanler = (time) => {};
-  // TODO: item.menuId 를 메뉴 이름으로 변경하기
-
   const handlePlusCount = () => {
     maxCookingCount += 1;
     setMaxCookingCount(maxCookingCount);
@@ -18,6 +16,18 @@ export default function Header({
     if (maxCookingCount === 0) return;
     maxCookingCount -= 1;
     setMaxCookingCount(maxCookingCount);
+  };
+
+  const [foodPrice, setFoodPrice] = useState("");
+
+  const handleCalculatePrice = (price) => {
+    // const calculatePrice = cookingMenu.reduce((accumulator, currentObj) => {
+    //   return accumulator + currentObj.price;
+    // }, 0);
+    // setFoodPrice(calculatePrice);
+    console.log("Price", price);
+
+    setFoodPrice(price);
   };
 
   return (
@@ -46,7 +56,9 @@ export default function Header({
               <div className="flex">
                 {item.remainingTime === 0 ? (
                   <div>
-                    <Button>계산하기</Button>
+                    <Button onClick={() => handleCalculatePrice(item.price)}>
+                      계산하기
+                    </Button>
                   </div>
                 ) : (
                   <div>
@@ -72,7 +84,7 @@ export default function Header({
         </div>
         <div className="flex mr-36 ">
           <div>이미지</div>
-          <div>매출:0원</div>
+          <div>매출:{foodPrice}원</div>
         </div>
       </div>
     </div>
