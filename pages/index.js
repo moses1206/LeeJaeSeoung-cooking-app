@@ -1,19 +1,18 @@
 import Category from "../src/component/Category";
 import Header from "../src/component/Header";
 import Menu from "../src/component/Menu";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import produce from "immer";
+import {
+  reducer,
+  INITIAL_STATE,
+  StateContext,
+  DispatchContext,
+} from "../src/state";
 
 export default function Home() {
-  /**
-   * * 함수 이름은 동사로 시작
-   *   이름만으로 기능을 확인하기 쉽도록
-   * context 문서 읽어보기: https://reactjs.org/docs/context.html
-   * 시간 0 됐을 때 계산하기 버튼 보여주기
-   * id로 foodMenu 이름 불러오기
-   */
-
   // F2 Rename 기능
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
   const [foodType, setFoodType] = useState("한식");
   const [cookingList, setCookingList] = useState([]);
   const [maxCookingCount, setMaxCookingCount] = useState(2);
@@ -81,28 +80,30 @@ export default function Home() {
    */
 
   return (
-    <div>
-      <Header
-        menuList={menuList}
-        cookingList={cookingList}
-        maxCookingCount={maxCookingCount}
-        setMaxCookingCount={setMaxCookingCount}
-        setCookingList={setCookingList}
-      />
-      <div className="flex">
-        <Category
+    <StateContext.Provider value={state}>
+      <DispatchContext.Provider value={dispatch}>
+        <Header
           menuList={menuList}
-          foodType={foodType}
-          setFoodType={setFoodType}
+          cookingList={cookingList}
+          maxCookingCount={maxCookingCount}
+          setMaxCookingCount={setMaxCookingCount}
+          setCookingList={setCookingList}
         />
-        <Menu
-          setMenuList={setMenuList}
-          menuList={menuList}
-          foodType={foodType}
-          handleAddCooking={handleAddCooking}
-        />
-      </div>
-    </div>
+        <div className='flex'>
+          <Category
+            menuList={menuList}
+            foodType={foodType}
+            setFoodType={setFoodType}
+          />
+          <Menu
+            setMenuList={setMenuList}
+            menuList={menuList}
+            foodType={foodType}
+            handleAddCooking={handleAddCooking}
+          />
+        </div>
+      </DispatchContext.Provider>
+    </StateContext.Provider>
   );
 }
 
