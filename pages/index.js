@@ -106,17 +106,18 @@ export default function Home() {
   );
 }
 
-const person = {
-  name: "abc",
-  hobby: {
-    name: "soccer",
-    prop2: 12,
-  },
-  hobby2: {
-    name: "soccer2",
-    prop2: 12,
-  },
-};
+// immer 사용법
+// const person = {
+//   name: "abc",
+//   hobby: {
+//     name: "soccer",
+//     prop2: 12,
+//   },
+//   hobby2: {
+//     name: "soccer2",
+//     prop2: 12,
+//   },
+// };
 
 // person.hobby.name = "aaa";
 // const newPerson1 = produce(person, (draft) => {
