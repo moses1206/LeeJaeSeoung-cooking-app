@@ -69,8 +69,6 @@ export default function Home() {
     return () => clearInterval(id);
   }, [cookingList]);
 
-  console.log("쿠킹메뉴", cookingList);
-
   // 등록과 해제의 페어가 있다. setInterval setTimeout addEventListener
 
   /**
@@ -83,7 +81,6 @@ export default function Home() {
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
         <Header
-          menuList={menuList}
           cookingList={cookingList}
           maxCookingCount={maxCookingCount}
           setMaxCookingCount={setMaxCookingCount}

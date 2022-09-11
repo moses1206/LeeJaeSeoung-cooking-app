@@ -4,8 +4,25 @@ import { createContext } from "react";
 export function reducer(_state, action) {
   return produce(_state, (state) => {
     switch (action.type) {
+      default:
+        return state;
       case "addTodo":
         state.todoList.push(action.todo);
+        break;
+      case "setFoodType":
+        state.foodType = action.value;
+        break;
+      case "addMenu":
+        state.menuList.push(action.value);
+      case "plusCookingCount":
+        state.maxCookingCount += 1;
+        break;
+      case "minusCookingCount":
+        state.maxCookingCount -= 1;
+        // maxCookingCount 값 제한 설정
+        if (state.maxCookingCount < 0) {
+          break;
+        }
         break;
     }
   });

@@ -1,13 +1,12 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "./Button";
+import { StateContext, DispatchContext } from "../state";
 
-export default function Cooking({
-  foodType,
-  menuList,
-  setMenuList,
-  handleAddCooking,
-}) {
+export default function Cooking({ setMenuList, handleAddCooking }) {
+  const { menuList, foodType } = useContext(StateContext);
+  const dispatch = useContext(DispatchContext);
+
   const [foodName, setFoodName] = useState("");
   const [cookingTime, setCookingTime] = useState("");
   const [price, setPrice] = useState("");
@@ -15,7 +14,7 @@ export default function Cooking({
 
   const foodFilter = menuList.filter((item) => item.category === foodType);
 
-  const menuCreateHanlder = () => {
+  const handleMenuCreate = () => {
     if (!foodName || !cookingTime || !price || !category) {
       alert("모든 필드를 채워주세요!!");
       return;
@@ -32,7 +31,12 @@ export default function Cooking({
     // 상태값이 변했을때 자동 렌더링이 된다. 왜 안되는가?
     // menuList 의 배열 레퍼런스가 바뀌지 않았다.
 
-    setMenuList([...menuList, menuData]);
+    dispatch({
+      type: "addMenu",
+      value: menuData,
+    });
+
+    // setMenuList([...menuList, menuData]);
     setFoodName("");
     setCookingTime("");
     setPrice("");
@@ -61,36 +65,36 @@ export default function Cooking({
     <div>
       {cookingList}
 
-      <div className="flex">
+      <div className='flex'>
         <input
-          type="text"
-          placeholder="요리이름"
-          className="bg-white"
+          type='text'
+          placeholder='요리이름'
+          className='bg-white'
           value={foodName}
           onChange={(e) => setFoodName(e.target.value)}
         />
         <input
-          type="number"
-          placeholder="조리시간"
-          className="bg-white"
+          type='number'
+          placeholder='조리시간'
+          className='bg-white'
           value={cookingTime}
           onChange={(e) => setCookingTime(e.target.value)}
         />
         <input
-          type="number"
-          placeholder="가격"
-          className="bg-white"
+          type='number'
+          placeholder='가격'
+          className='bg-white'
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
         <input
-          type="text"
-          placeholder="카테고리"
-          className="bg-white"
+          type='text'
+          placeholder='카테고리'
+          className='bg-white'
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         />
-        <Button onClick={menuCreateHanlder}>메뉴 추가</Button>
+        <Button onClick={handleMenuCreate}>메뉴 추가</Button>
       </div>
     </div>
   );

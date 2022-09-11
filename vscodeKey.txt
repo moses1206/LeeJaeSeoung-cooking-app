@@ -1,1 +1,2 @@
 explorer 접기 -- commend + b
+file Open -- commend + p

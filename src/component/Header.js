@@ -1,13 +1,19 @@
 import Button from "./Button";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { StateContext, DispatchContext } from "../state";
 
-export default function Header({
-  cookingList,
-  menuList,
-  maxCookingCount,
-  setMaxCookingCount,
-  setCookingList,
-}) {
+export default function Header({ setMaxCookingCount, setCookingList }) {
+  const [totalSales, setTotalSales] = useState(0);
+  const {
+    menuList,
+    maxCookingCount,
+    cookingList,
+    plusCookingCount,
+    minusCookingCount,
+  } = useContext(StateContext);
+
+  const dispatch = useContext(DispatchContext);
+
   const handlePlusCount = () => {
     maxCookingCount += 1;
     setMaxCookingCount(maxCookingCount);
@@ -18,8 +24,6 @@ export default function Header({
     maxCookingCount -= 1;
     setMaxCookingCount(maxCookingCount);
   };
-
-  const [totalSales, setTotalSales] = useState(0);
 
   const handleCalculatePrice = (cooking) => {
     // const calculatePrice = cookingList.reduce((accumulator, currentObj) => {
@@ -36,9 +40,9 @@ export default function Header({
   };
 
   return (
-    <div className="bg-yellow-300 flex min-h-[110px] p-5">
-      <div className="">
-        <div className="flex w-80">
+    <div className='bg-yellow-300 flex min-h-[110px] p-5'>
+      <div className=''>
+        <div className='flex w-80'>
           <div>이미지</div>
           <h2>조리현황</h2>
         </div>
@@ -58,7 +62,7 @@ export default function Header({
           return (
             <div key={item.id}>
               <div>{findMenu.foodName}</div>
-              <div className="flex">
+              <div className='flex'>
                 {item.remainingTime === 0 ? (
                   <div>
                     <Button onClick={() => handleCalculatePrice(item)}>
@@ -68,9 +72,9 @@ export default function Header({
                 ) : (
                   <div>
                     <div>남은시간: {item.remainingTime}초</div>
-                    <div className="flex">
+                    <div className='flex'>
                       <Button>pause</Button>
-                      <Button className="ml-1">stop</Button>
+                      <Button className='ml-1'>stop</Button>
                     </div>
                   </div>
                 )}
@@ -81,13 +85,17 @@ export default function Header({
         {cookingList.length === 0 && <h4>조리 중인 요리가 업습니다.</h4>}
       </div>
 
-      <div className="flex w-full items-end flex-col ">
-        <div className="flex space-x-3">
+      <div className='flex w-full items-end flex-col '>
+        <div className='flex space-x-3'>
           <h4>최대 동시 조리:{maxCookingCount}</h4>
-          <Button onClick={() => handlePlusCount()}>증가</Button>
-          <Button onClick={() => handleMinusCount()}>감소</Button>
+          <Button onClick={() => dispatch({ type: "plusCookingCount" })}>
+            증가
+          </Button>
+          <Button onClick={() => dispatch({ type: "minusCookingCount" })}>
+            감소
+          </Button>
         </div>
-        <div className="flex mr-36 ">
+        <div className='flex mr-36 '>
           <div>이미지</div>
           <div>매출:{totalSales}원</div>
         </div>

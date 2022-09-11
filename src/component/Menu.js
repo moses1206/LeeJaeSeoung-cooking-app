@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Cooking from "./Cooking";
 
 export default function Menu({
@@ -8,7 +8,7 @@ export default function Menu({
   handleAddCooking,
 }) {
   return (
-    <div className="bg-gray-200">
+    <div className='bg-gray-200'>
       <h2>메뉴</h2>
       <Cooking
         foodType={foodType}
