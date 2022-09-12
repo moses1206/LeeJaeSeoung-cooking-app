@@ -1,7 +1,8 @@
-import React from "react";
-import { useState, useContext } from "react";
+import React, { useEffect } from "react";
+import { useState, useContext, useRef } from "react";
 import Button from "./Button";
 import { StateContext, DispatchContext } from "../state";
+import Link from "next/link";
 
 export default function Cooking({ setMenuList, handleAddCooking }) {
   const { menuList, foodType } = useContext(StateContext);
@@ -11,6 +12,24 @@ export default function Cooking({ setMenuList, handleAddCooking }) {
   const [cookingTime, setCookingTime] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
+
+  // 랜더링과 관계없는 값들을 저장.
+  // useCallback,useMemo 을 써서 레퍼런스의 변경없도록.. 성능최적화..
+  // 느림을 느꼈을때 : 레퍼런스를 고정함으로
+  const inputRef = useRef();
+
+  // useEffect에서 함수를 리턴해야한다.리턴한 함수는 두번째
+  // 리턴 된것을 unMount될때도 실행해 준다.(등록한 것을 해제하는 용도)
+  // 페어 프로그램. 등록과 해제 setInterval , setTimeout
+  useEffect(() => {
+    const handleKeyup = (e) => {
+      if (e.key === "a") {
+        inputRef.current.focus();
+      }
+    };
+    window.addEventListener("keyup", handleKeyup);
+    return () => window.removeEventListener("keyup", handleKeyup);
+  }, []);
 
   const foodFilter = menuList.filter((item) => item.category === foodType);
 
@@ -57,6 +76,9 @@ export default function Cooking({ setMenuList, handleAddCooking }) {
       <div>
         <Button onClick={() => handleAddCooking(item)}>조리 시작</Button>
         <Button onClick={() => deleteMenuHandler(item.id)}>메뉴 삭제</Button>
+        <Link href={`/menu-detail/${item.id}`}>
+          <Button>메뉴 상세</Button>
+        </Link>
       </div>
     </div>
   ));
@@ -65,32 +87,33 @@ export default function Cooking({ setMenuList, handleAddCooking }) {
     <div>
       {cookingList}
 
-      <div className='flex'>
+      <div className="flex">
         <input
-          type='text'
-          placeholder='요리이름'
-          className='bg-white'
+          ref={inputRef}
+          type="text"
+          placeholder="요리이름"
+          className="bg-white"
           value={foodName}
           onChange={(e) => setFoodName(e.target.value)}
         />
         <input
-          type='number'
-          placeholder='조리시간'
-          className='bg-white'
+          type="number"
+          placeholder="조리시간"
+          className="bg-white"
           value={cookingTime}
           onChange={(e) => setCookingTime(e.target.value)}
         />
         <input
-          type='number'
-          placeholder='가격'
-          className='bg-white'
+          type="number"
+          placeholder="가격"
+          className="bg-white"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
         <input
-          type='text'
-          placeholder='카테고리'
-          className='bg-white'
+          type="text"
+          placeholder="카테고리"
+          className="bg-white"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         />

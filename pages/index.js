@@ -1,18 +1,13 @@
 import Category from "../src/component/Category";
 import Header from "../src/component/Header";
 import Menu from "../src/component/Menu";
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect } from "react";
 import produce from "immer";
-import {
-  reducer,
-  INITIAL_STATE,
-  StateContext,
-  DispatchContext,
-} from "../src/state";
 
 export default function Home() {
+  // 메뉴추가할때 a를 누르면 첫번째 input에 focus가 되도록 !!
   // F2 Rename 기능
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  // index js useState 삭제 , detail 작업 , 헤더쪽 미비한점
   const [foodType, setFoodType] = useState("한식");
   const [cookingList, setCookingList] = useState([]);
   const [maxCookingCount, setMaxCookingCount] = useState(2);
@@ -78,29 +73,27 @@ export default function Home() {
    */
 
   return (
-    <StateContext.Provider value={state}>
-      <DispatchContext.Provider value={dispatch}>
-        <Header
-          cookingList={cookingList}
-          maxCookingCount={maxCookingCount}
-          setMaxCookingCount={setMaxCookingCount}
-          setCookingList={setCookingList}
+    <div>
+      <Header
+        cookingList={cookingList}
+        maxCookingCount={maxCookingCount}
+        setMaxCookingCount={setMaxCookingCount}
+        setCookingList={setCookingList}
+      />
+      <div className="flex">
+        <Category
+          menuList={menuList}
+          foodType={foodType}
+          setFoodType={setFoodType}
         />
-        <div className='flex'>
-          <Category
-            menuList={menuList}
-            foodType={foodType}
-            setFoodType={setFoodType}
-          />
-          <Menu
-            setMenuList={setMenuList}
-            menuList={menuList}
-            foodType={foodType}
-            handleAddCooking={handleAddCooking}
-          />
-        </div>
-      </DispatchContext.Provider>
-    </StateContext.Provider>
+        <Menu
+          setMenuList={setMenuList}
+          menuList={menuList}
+          foodType={foodType}
+          handleAddCooking={handleAddCooking}
+        />
+      </div>
+    </div>
   );
 }
 

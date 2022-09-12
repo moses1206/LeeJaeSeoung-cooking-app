@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import TodoList from "./TodoList";
 import Button from "../../component/Button";
 import { StateContext, DispatchContext } from "../state";
@@ -19,8 +19,17 @@ export default function TodoMain() {
     });
     setDesc("");
   }
+
+  const boxRef = useRef();
+  const [boxWidth, setBoxwidth] = useState(0);
+  useEffect(() => {
+    const rect = boxRef.current.getBoundingClientRect();
+    setBoxwidth(rect.width);
+  }, []);
+
   return (
-    <div>
+    <div ref={boxRef}>
+      박스 크기: {boxWidth}
       <TodoList />
       <input
         type="text"
