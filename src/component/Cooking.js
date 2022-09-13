@@ -4,8 +4,9 @@ import Button from "./Button";
 import { StateContext, DispatchContext } from "../state";
 import Link from "next/link";
 
-export default function Cooking({ setMenuList, handleAddCooking }) {
-  const { menuList, foodType } = useContext(StateContext);
+export default function Cooking() {
+  const { menuList, foodType, maxCookingCount, cookingList } =
+    useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
   const [foodName, setFoodName] = useState("");
@@ -63,12 +64,27 @@ export default function Cooking({ setMenuList, handleAddCooking }) {
   };
 
   const deleteMenuHandler = (id) => {
-    const filteredData = menuList.filter((item) => item.id !== id);
-    console.log("삭제된후 데이터  ", filteredData);
-    setMenuList(filteredData);
+    // const filteredData = menuList.filter((item) => item.id !== id);
+    // console.log("삭제된후 데이터  ", filteredData);
+    // setMenuList(filteredData);
+    console.log("cooking id", id);
+    dispatch({ type: "deleteMenu", value: id });
   };
 
-  const cookingList = foodFilter.map((item) => (
+  const handleAddCooking = (item) => {
+    const cooking = {
+      id: Date.now(),
+      menuId: item.id,
+      remainingTime: item.cookingTime,
+      price: item.price,
+    };
+    if (cookingList.length < maxCookingCount) {
+      // setCookingList([...cookingList, cooking]);
+      dispatch({ type: "addCooking", value: cooking });
+    }
+  };
+
+  const addCookingList = foodFilter.map((item) => (
     <div key={item.id}>
       <div>{item.foodName}</div>
       <div>조리시간 : {item.cookingTime}초</div>
@@ -85,35 +101,35 @@ export default function Cooking({ setMenuList, handleAddCooking }) {
 
   return (
     <div>
-      {cookingList}
+      {addCookingList}
 
-      <div className="flex">
+      <div className='flex'>
         <input
           ref={inputRef}
-          type="text"
-          placeholder="요리이름"
-          className="bg-white"
+          type='text'
+          placeholder='요리이름'
+          className='bg-white'
           value={foodName}
           onChange={(e) => setFoodName(e.target.value)}
         />
         <input
-          type="number"
-          placeholder="조리시간"
-          className="bg-white"
+          type='number'
+          placeholder='조리시간'
+          className='bg-white'
           value={cookingTime}
           onChange={(e) => setCookingTime(e.target.value)}
         />
         <input
-          type="number"
-          placeholder="가격"
-          className="bg-white"
+          type='number'
+          placeholder='가격'
+          className='bg-white'
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
         <input
-          type="text"
-          placeholder="카테고리"
-          className="bg-white"
+          type='text'
+          placeholder='카테고리'
+          className='bg-white'
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         />

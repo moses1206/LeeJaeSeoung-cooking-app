@@ -13,6 +13,9 @@ export function reducer(_state, action) {
       case "addMenu":
         state.menuList.push(action.value);
         break;
+      case "deleteMenu":
+        state.menuList.filter((item) => item.id !== action.value);
+        break;
       case "plusCookingCount":
         state.maxCookingCount += 1;
         break;
@@ -22,6 +25,8 @@ export function reducer(_state, action) {
           state.maxCookingCount -= 1;
         }
         break;
+      case "addCooking":
+        state.cookingList.push(action.value);
       default:
         return state;
     }
