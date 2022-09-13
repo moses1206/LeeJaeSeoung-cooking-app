@@ -1,51 +1,18 @@
 import Category from "../src/component/Category";
 import Header from "../src/component/Header";
 import Menu from "../src/component/Menu";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { StateContext, DispatchContext } from "../src/state";
 import produce from "immer";
 
 export default function Home() {
+  const { cookingList } = useContext(StateContext);
+  const dispatch = useContext(DispatchContext);
+
   // 메뉴추가할때 a를 누르면 첫번째 input에 focus가 되도록 !!
   // F2 Rename 기능
   // index js useState 삭제 , detail 작업 , 헤더쪽 미비한점
   const [foodType, setFoodType] = useState("한식");
-  const [cookingList, setCookingList] = useState([]);
-  const [maxCookingCount, setMaxCookingCount] = useState(2);
-  const [menuList, setMenuList] = useState([
-    {
-      id: 1,
-      foodName: "김치찌개",
-      category: "한식",
-      cookingTime: 8,
-      price: 7000,
-    },
-    {
-      id: 2,
-      foodName: "된장찌개",
-      category: "한식",
-      cookingTime: 10,
-      price: 8500,
-    },
-    {
-      id: 3,
-      foodName: "초밥",
-      category: "일식",
-      cookingTime: 5,
-      price: 9000,
-    },
-  ]);
-
-  const handleAddCooking = (item) => {
-    const cooking = {
-      id: Date.now(),
-      menuId: item.id,
-      remainingTime: item.cookingTime,
-      price: item.price,
-    };
-    if (cookingList.length < maxCookingCount) {
-      setCookingList([...cookingList, cooking]);
-    }
-  };
 
   useEffect(() => {
     // TODO: 불변으로 관리하기
@@ -59,10 +26,10 @@ export default function Home() {
           }
         }
       });
-      setCookingList(newCookingList);
+      dispatch({ type: "addCooking", value: newCookingList });
     }, 1000);
     return () => clearInterval(id);
-  }, [cookingList]);
+  }, [cookingList, dispatch]);
 
   // 등록과 해제의 페어가 있다. setInterval setTimeout addEventListener
 
@@ -74,24 +41,10 @@ export default function Home() {
 
   return (
     <div>
-      <Header
-        cookingList={cookingList}
-        maxCookingCount={maxCookingCount}
-        setMaxCookingCount={setMaxCookingCount}
-        setCookingList={setCookingList}
-      />
+      <Header />
       <div className="flex">
-        <Category
-          menuList={menuList}
-          foodType={foodType}
-          setFoodType={setFoodType}
-        />
-        <Menu
-          setMenuList={setMenuList}
-          menuList={menuList}
-          foodType={foodType}
-          handleAddCooking={handleAddCooking}
-        />
+        <Category />
+        <Menu />
       </div>
     </div>
   );

@@ -67,7 +67,6 @@ export default function Cooking() {
     // const filteredData = menuList.filter((item) => item.id !== id);
     // console.log("삭제된후 데이터  ", filteredData);
     // setMenuList(filteredData);
-    console.log("cooking id", id);
     dispatch({ type: "deleteMenu", value: id });
   };
 
@@ -78,6 +77,7 @@ export default function Cooking() {
       remainingTime: item.cookingTime,
       price: item.price,
     };
+    console.log("쿠킹", cooking);
     if (cookingList.length < maxCookingCount) {
       // setCookingList([...cookingList, cooking]);
       dispatch({ type: "addCooking", value: cooking });
@@ -102,34 +102,33 @@ export default function Cooking() {
   return (
     <div>
       {addCookingList}
-
-      <div className='flex'>
+      <div className="flex">
         <input
           ref={inputRef}
-          type='text'
-          placeholder='요리이름'
-          className='bg-white'
+          type="text"
+          placeholder="요리이름"
+          className="bg-white"
           value={foodName}
           onChange={(e) => setFoodName(e.target.value)}
         />
         <input
-          type='number'
-          placeholder='조리시간'
-          className='bg-white'
+          type="number"
+          placeholder="조리시간"
+          className="bg-white"
           value={cookingTime}
           onChange={(e) => setCookingTime(e.target.value)}
         />
         <input
-          type='number'
-          placeholder='가격'
-          className='bg-white'
+          type="number"
+          placeholder="가격"
+          className="bg-white"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
         <input
-          type='text'
-          placeholder='카테고리'
-          className='bg-white'
+          type="text"
+          placeholder="카테고리"
+          className="bg-white"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         />
