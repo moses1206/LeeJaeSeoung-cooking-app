@@ -3,6 +3,7 @@ import { useState, useContext, useRef } from "react";
 import Button from "./Button";
 import { StateContext, DispatchContext } from "../state";
 import Link from "next/link";
+import produce from "immer";
 
 export default function Cooking() {
   const { menuList, foodType, maxCookingCount, cookingList } =
@@ -84,7 +85,7 @@ export default function Cooking() {
     }
   };
 
-  const addCookingList = foodFilter.map((item) => (
+  const newCookingList = foodFilter.map((item) => (
     <div key={item.id}>
       <div>{item.foodName}</div>
       <div>조리시간 : {item.cookingTime}초</div>
@@ -101,34 +102,34 @@ export default function Cooking() {
 
   return (
     <div>
-      {addCookingList}
-      <div className="flex">
+      {newCookingList}
+      <div className='flex'>
         <input
           ref={inputRef}
-          type="text"
-          placeholder="요리이름"
-          className="bg-white"
+          type='text'
+          placeholder='요리이름'
+          className='bg-white'
           value={foodName}
           onChange={(e) => setFoodName(e.target.value)}
         />
         <input
-          type="number"
-          placeholder="조리시간"
-          className="bg-white"
+          type='number'
+          placeholder='조리시간'
+          className='bg-white'
           value={cookingTime}
           onChange={(e) => setCookingTime(e.target.value)}
         />
         <input
-          type="number"
-          placeholder="가격"
-          className="bg-white"
+          type='number'
+          placeholder='가격'
+          className='bg-white'
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
         <input
-          type="text"
-          placeholder="카테고리"
-          className="bg-white"
+          type='text'
+          placeholder='카테고리'
+          className='bg-white'
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         />
