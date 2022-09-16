@@ -29,6 +29,25 @@ export function reducer(_state, action) {
         break;
       case "addCooking":
         state.cookingList.push(action.value);
+        break;
+      case "updateMenuDetail":
+        console.log("StateValue", action.value);
+        const index = state.menuList.findIndex(
+          (item) => item.id === action.value.id
+        );
+        state.menuList[index] = action.value;
+        // const newMenuList = state.menuList.map((item) => {
+        //   if (item.id === action.value.id) {
+        //     return action.value;
+        //   } else {
+        //     return item;
+        //   }
+        // });
+        // state.menuList = newMenuList;
+        break;
+      case "setCookingList":
+        state.cookingList = action.value;
+        break;
       default:
         return state;
     }

@@ -4,8 +4,12 @@ import Button from "./Button";
 import { StateContext, DispatchContext } from "../state";
 import Link from "next/link";
 import produce from "immer";
+import useMenus from "../state/server/useMenus";
 
 export default function Cooking() {
+  const [menus, { state, isLoading }] = useMenus();
+  console.log(menus, { state, isLoading });
+
   const { menuList, foodType, maxCookingCount, cookingList } =
     useContext(StateContext);
   const dispatch = useContext(DispatchContext);
@@ -103,33 +107,33 @@ export default function Cooking() {
   return (
     <div>
       {newCookingList}
-      <div className='flex'>
+      <div className="flex">
         <input
           ref={inputRef}
-          type='text'
-          placeholder='요리이름'
-          className='bg-white'
+          type="text"
+          placeholder="요리이름"
+          className="bg-white"
           value={foodName}
           onChange={(e) => setFoodName(e.target.value)}
         />
         <input
-          type='number'
-          placeholder='조리시간'
-          className='bg-white'
+          type="number"
+          placeholder="조리시간"
+          className="bg-white"
           value={cookingTime}
           onChange={(e) => setCookingTime(e.target.value)}
         />
         <input
-          type='number'
-          placeholder='가격'
-          className='bg-white'
+          type="number"
+          placeholder="가격"
+          className="bg-white"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
         <input
-          type='text'
-          placeholder='카테고리'
-          className='bg-white'
+          type="text"
+          placeholder="카테고리"
+          className="bg-white"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         />

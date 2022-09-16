@@ -3,6 +3,7 @@ import Header from "../src/component/Header";
 import Menu from "../src/component/Menu";
 import { useState, useEffect, useContext } from "react";
 import { StateContext, DispatchContext } from "../src/state";
+import produce from "immer";
 
 export default function Home() {
   const { cookingList } = useContext(StateContext);
@@ -12,22 +13,22 @@ export default function Home() {
   // F2 Rename 기능
   // index js useState 삭제 , detail 작업 , 헤더쪽 미비한점
 
-  // useEffect(() => {
-  //   // TODO: 불변으로 관리하기
-  //   // 💥💥 return()=> clearInterval , clearInterval 차이는?? 💥💥
-  //   const id = setInterval(() => {
-  //     const newCookingList = produce(cookingList, (draft) => {
-  //       for (const item of draft) {
-  //         // 직접적으로 값을 바꾸면 안된다. 레퍼런스로 바꾸어야 한다.
-  //         if (item.remainingTime > 0) {
-  //           item.remainingTime -= 1;
-  //         }
-  //       }
-  //     });
-  //     dispatch({ type: "addCooking", value: newCookingList });
-  //   }, 1000);
-  //   return () => clearInterval(id);
-  // }, [cookingList, dispatch]);
+  useEffect(() => {
+    // TODO: 불변으로 관리하기
+    // 💥💥 return()=> clearInterval , clearInterval 차이는?? 💥💥
+    const id = setInterval(() => {
+      const newCookingList = produce(cookingList, (draft) => {
+        for (const item of draft) {
+          // 직접적으로 값을 바꾸면 안된다. 레퍼런스로 바꾸어야 한다.
+          if (item.remainingTime > 0) {
+            item.remainingTime -= 1;
+          }
+        }
+      });
+      dispatch({ type: "setCookingList", value: newCookingList });
+    }, 1000);
+    return () => clearInterval(id);
+  }, [cookingList, dispatch]);
 
   // 등록과 해제의 페어가 있다. setInterval setTimeout addEventListener
 
@@ -40,7 +41,7 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <div className='flex'>
+      <div className="flex">
         <Category />
         <Menu />
       </div>
